@@ -67,6 +67,7 @@ Optional arguments
                         (default: rst)
   --dir-cat             Put files in directories with categories name
                         (default: False)
+  --filter-author       Import only post from the specified author.
   --strip-raw           Strip raw HTML code that can't be converted to markup
                         such as flash embeds or iframes (wordpress import
                         only) (default: False)

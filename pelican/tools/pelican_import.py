@@ -363,8 +363,10 @@ def build_markdown_header(title, date, author, categories, tags, slug):
     header += '\n'
     return header
 
-def fields2pelican(fields, out_markup, output_path, dircat=False, strip_raw=False, disable_slugs=False):
+def fields2pelican(fields, out_markup, output_path, dircat=False, strip_raw=False, disable_slugs=False, filter_author=None):
     for title, content, filename, date, author, categories, tags, in_markup in fields:
+        if filter_author and filter_author != author:
+            continue
         slug = not disable_slugs and filename or None
         if (in_markup == "markdown") or (out_markup == "markdown") :
             ext = '.md'
@@ -464,6 +466,8 @@ def main():
         help='Output markup format (supports rst & markdown)')
     parser.add_argument('--dir-cat', action='store_true', dest='dircat',
         help='Put files in directories with categories name')
+    parser.add_argument('--filter-author', dest='author',
+        help='Import only post from the specified author')
     parser.add_argument('--strip-raw', action='store_true', dest='strip_raw',
         help="Strip raw HTML code that can't be converted to "
              "markup such as flash embeds or iframes (wordpress import only)")
@@ -513,4 +517,5 @@ def main():
     fields2pelican(fields, args.markup, args.output,
                    dircat=args.dircat or False,
                    strip_raw=args.strip_raw or False,
-                   disable_slugs=args.disable_slugs or False)
+                   disable_slugs=args.disable_slugs or False,
+                   filter_author=args.author)
